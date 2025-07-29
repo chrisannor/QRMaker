@@ -1,0 +1,12 @@
+@QRMaker_HostAddress = http://localhost:5249
+
+@URLToEncode = https://kynetix.com
+@QRCodeFileName = KynetixURLTest
+
+# http://localhost:5249/QR?url=kynetix.com&fileName=kynetixURL
+# 'http://localhost:5249/QR?url=kynetix.com&fileName=kynetixURL'
+GET {{QRMaker_HostAddress}}/qr?url={{URLToEncode}}&fileName={{QRCodeFileName}}
+Content-Type: application/json
+Accept: text/plain
+
+###
