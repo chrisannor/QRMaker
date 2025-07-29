@@ -12,20 +12,23 @@ public class FileService : IFileService
 
     public async Task<string> SaveFileAsync(string content, string fileName, CancellationToken cancellationToken)
     {
-        string filePath = Path.Combine(Directory.GetCurrentDirectory(), DOWNLOAD_FOLDER, fileName);
 
+        string filePath = Path.Combine(Directory.GetCurrentDirectory(), DOWNLOAD_FOLDER);
         try
         {
             if (!Directory.Exists(Path.GetDirectoryName(filePath)))
             {
-                Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+                Directory.CreateDirectory(filePath);
             }
-            using (StreamWriter writer = new StreamWriter(filePath, false))
+            string fullFilePath = Path.Combine(filePath, fileName);
+            _logger.LogInformation("Saving file at {FilePath}", fullFilePath);
+
+            using (StreamWriter writer = new StreamWriter(fullFilePath, false))
             {
                 await writer.WriteAsync(content);
             }
-            _logger.LogInformation("File saved successfully at {FilePath}", filePath);
-            return filePath;
+            _logger.LogInformation("File saved successfully at {FilePath}", fullFilePath);
+            return fullFilePath;
         }
         catch (IOException ioEx)
         {
